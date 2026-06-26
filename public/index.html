@@ -247,7 +247,8 @@ const questions = [
       { label: "Digital product creator or online educator", score: 0, revBase: 1500 },
       { label: "Service provider, freelancer, or coach", score: 0, revBase: 2500 },
       { label: "Content creator or social media influencer", score: 0, revBase: 800 },
-      { label: "Brick and mortar or local business owner", score: 0, revBase: 3000 }
+      { label: "Brick and mortar or local business owner", score: 0, revBase: 3000 },
+      { label: "Something else entirely", score: 0, revBase: 1500 }
     ], key: "type"
   },
   {
@@ -272,6 +273,7 @@ const questions = [
     text: "Do you have digital products available for sale right now?",
     options: [
       { label: "No — I haven't built anything yet", score: 0 },
+      { label: "Not applicable to my business type", score: 0 },
       { label: "I have one product but it's not actively promoted", score: 15 },
       { label: "I have a small suite of products", score: 40 },
       { label: "I have multiple products with active sales funnels", score: 70 }
