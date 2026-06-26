@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Ascension Score | Jade Janosi</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f8fffe;
+  color: #0F172A;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.shell {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #CCF2F3;
+  max-width: 560px;
+  width: 100%;
+  padding: 40px 40px 48px;
+}
+
+.logo {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1D9E75;
+  margin-bottom: 32px;
+}
+
+.progress-bar { height: 3px; background: #E3F8F9; border-radius: 2px; margin-bottom: 28px; }
+.progress-fill { height: 100%; background: #1D9E75; border-radius: 2px; transition: width 0.35s; }
+
+.q-meta { font-size: 11px; color: #94A3B8; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+.q-text { font-family: 'Be Vietnam Pro', sans-serif; font-size: 20px; font-weight: 700; color: #0F172A; line-height: 1.3; margin-bottom: 24px; }
+
+.options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.opt {
+  padding: 13px 16px;
+  border: 1px solid #E3F8F9;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #334155;
+  background: #ffffff;
+  transition: all 0.12s;
+  text-align: left;
+  font-family: 'Nunito Sans', sans-serif;
+}
+.opt:hover { border-color: #1D9E75; background: #f0fdfb; color: #0F172A; }
+.opt.selected { border-color: #1D9E75; background: #E3F8F9; color: #0F172A; font-weight: 600; }
+
+.nav { display: flex; justify-content: space-between; align-items: center; }
+.btn-back {
+  font-size: 13px; padding: 9px 20px; border: 1px solid #CCF2F3; border-radius: 8px;
+  background: transparent; color: #64748B; cursor: pointer; font-family: 'Nunito Sans', sans-serif;
+}
+.btn-back:hover { background: #f8fffe; }
+.btn-back:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-next {
+  font-size: 13px; padding: 9px 24px; border: none; border-radius: 8px;
+  background: #0F172A; color: #ffffff; cursor: pointer; font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+}
+.btn-next:hover { background: #1e293b; }
+.btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* EMAIL GATE */
+.gate { display: none; }
+.gate-title { font-family: 'Be Vietnam Pro', sans-serif; font-size: 22px; font-weight: 700; color: #0F172A; margin-bottom: 8px; line-height: 1.3; }
+.gate-sub { font-size: 14px; color: #64748B; margin-bottom: 28px; line-height: 1.6; }
+.field-group { margin-bottom: 14px; }
+.field-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; letter-spacing: 0.04em; }
+.field-group input {
+  width: 100%; padding: 11px 14px; border: 1px solid #CCF2F3; border-radius: 8px;
+  font-size: 14px; color: #0F172A; font-family: 'Nunito Sans', sans-serif;
+  outline: none; transition: border-color 0.12s;
+}
+.field-group input:focus { border-color: #1D9E75; }
+.btn-reveal {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, #054e6f, #0a696b);
+  color: white; border: none; border-radius: 10px; font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px;
+}
+.btn-reveal:hover { opacity: 0.92; }
+.gate-note { font-size: 11px; color: #94A3B8; text-align: center; margin-top: 10px; }
+.error-msg { font-size: 12px; color: #E24B4A; margin-top: 6px; display: none; }
+
+/* RESULTS */
+.results { display: none; }
+
+.score-header { text-align: center; margin-bottom: 28px; }
+.score-ring-wrap { width: 130px; height: 130px; margin: 0 auto 16px; position: relative; }
+.score-ring-wrap svg { transform: rotate(-90deg); }
+.score-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.score-inner .num { font-family: 'Be Vietnam Pro', sans-serif; font-size: 32px; font-weight: 800; color: #0F172A; line-height: 1; }
+.score-inner .denom { font-size: 12px; color: #94A3B8; margin-top: 2px; }
+
+.tier-pill { display: inline-block; padding: 4px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; font-family: 'Be Vietnam Pro', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+.res-title { font-family: 'Be Vietnam Pro', sans-serif; font-size: 20px; font-weight: 700; color: #0F172A; margin-bottom: 8px; }
+.res-sub { font-size: 14px; color: #64748B; line-height: 1.65; max-width: 420px; margin: 0 auto; }
+
+.income-block { background: #f8fffe; border: 1px solid #CCF2F3; border-radius: 12px; padding: 20px; margin: 24px 0; }
+.income-block h4 { font-family: 'Be Vietnam Pro', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #1D9E75; margin-bottom: 14px; }
+.income-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+.income-row:not(:last-child) { border-bottom: 1px solid #E3F8F9; }
+.income-lbl { font-size: 13px; color: #64748B; }
+.income-val { font-size: 14px; font-weight: 600; color: #0F172A; font-family: 'Be Vietnam Pro', sans-serif; }
+.income-val.green { color: #1D9E75; }
+
+.breakdown { margin-bottom: 24px; }
+.breakdown h4 { font-family: 'Be Vietnam Pro', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #94A3B8; margin-bottom: 12px; }
+.bd-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+.bd-row:last-child { border: none; }
+.bd-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.bd-text { font-size: 13px; color: #475569; line-height: 1.55; }
+
+.action-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.btn-download {
+  flex: 1; padding: 11px; border: 1px solid #CCF2F3; border-radius: 8px; background: white;
+  font-size: 13px; color: #0F172A; cursor: pointer; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 600;
+}
+.btn-download:hover { background: #f8fffe; }
+.btn-share {
+  flex: 1; padding: 11px; border: 1px solid #CCF2F3; border-radius: 8px; background: white;
+  font-size: 13px; color: #0F172A; cursor: pointer; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 600;
+}
+.btn-share:hover { background: #f8fffe; }
+
+.cta-block { background: linear-gradient(135deg, #054e6f, #0a696b); border-radius: 12px; padding: 24px; text-align: center; }
+.cta-block h3 { font-family: 'Be Vietnam Pro', sans-serif; font-size: 17px; font-weight: 700; color: white; margin-bottom: 8px; line-height: 1.3; }
+.cta-block p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 16px; line-height: 1.55; }
+.btn-cta {
+  display: inline-block; background: #9FE1CB; color: #0F172A; font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px; font-weight: 700; padding: 12px 28px; border-radius: 50px; border: none; cursor: pointer;
+  text-decoration: none;
+}
+.btn-cta:hover { background: #7dd4b8; }
+
+.share-toast { display: none; text-align: center; font-size: 12px; color: #1D9E75; margin-top: 8px; font-weight: 600; }
+
+@media (max-width: 480px) {
+  .shell { padding: 28px 22px 36px; }
+  .q-text { font-size: 17px; }
+  .action-row { flex-direction: column; }
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  .shell { border: none; border-radius: 0; max-width: 100%; }
+  .action-row, .cta-block, .logo { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="logo">Jade Janosi × NOVA</div>
+
+  <!-- QUIZ -->
+  <div id="quiz-section">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="q-meta" id="q-meta"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="nav">
+      <button class="btn-back" id="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div class="gate" id="gate-section">
+    <div class="gate-title">Your score is ready.</div>
+    <div class="gate-sub">Enter your details to reveal your AI Ascension Score and see exactly how much income you could be leaving behind.</div>
+    <div class="field-group">
+      <label>First name</label>
+      <input type="text" id="gate-name" placeholder="Jade" />
+    </div>
+    <div class="field-group">
+      <label>Email address</label>
+      <input type="email" id="gate-email" placeholder="you@example.com" />
+      <div class="error-msg" id="gate-error">Please enter a valid email address.</div>
+    </div>
+    <button class="btn-reveal" onclick="submitGate()">Reveal my AI Ascension Score →</button>
+    <div class="gate-note">No spam. Your score is waiting on the other side.</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results-section">
+    <div class="score-header">
+      <div class="score-ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="56" fill="none" stroke="#E3F8F9" stroke-width="9"/>
+          <circle cx="65" cy="65" r="56" fill="none" stroke="#1D9E75" stroke-width="9" stroke-linecap="round" id="score-arc" stroke-dasharray="352" stroke-dashoffset="352"/>
+        </svg>
+        <div class="score-inner">
+          <span class="num" id="score-num">0</span>
+          <span class="denom">out of 100</span>
+        </div>
+      </div>
+      <div><span class="tier-pill" id="tier-pill"></span></div>
+      <div class="res-title" id="res-title"></div>
+      <p class="res-sub" id="res-sub"></p>
+    </div>
+
+    <div class="income-block">
+      <h4>Your income gap analysis</h4>
+      <div class="income-row"><span class="income-lbl">Estimated current monthly revenue</span><span class="income-val" id="curr-rev"></span></div>
+      <div class="income-row"><span class="income-lbl">Potential with AI used correctly</span><span class="income-val" id="pot-rev"></span></div>
+      <div class="income-row"><span class="income-lbl">Monthly gap you're leaving behind</span><span class="income-val green" id="gap-rev"></span></div>
+    </div>
+
+    <div class="breakdown">
+      <h4>Your breakdown</h4>
+      <div id="breakdown-list"></div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-download" onclick="downloadResults()">Download my results</button>
+      <button class="btn-share" onclick="shareResults()">Share my score</button>
+    </div>
+    <div class="share-toast" id="share-toast">Link copied to clipboard!</div>
+
+    <div class="cta-block">
+      <h3>Ready to close the gap?</h3>
+      <p>NOVA teaches you how to build custom AI tools without code and deploy them as products, lead magnets, and business assets. No technical background needed.</p>
+      <a class="btn-cta" href="https://jadejanosi.com" target="_blank">Join the NOVA waitlist →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "What best describes your current creator or business type?",
+    options: [
+      { label: "Digital product creator or online educator", score: 0, revBase: 1500 },
+      { label: "Service provider, freelancer, or coach", score: 0, revBase: 2500 },
+      { label: "Content creator or social media influencer", score: 0, revBase: 800 },
+      { label: "Brick and mortar or local business owner", score: 0, revBase: 3000 }
+    ], key: "type"
+  },
+  {
+    text: "How would you describe your current use of AI in your business?",
+    options: [
+      { label: "I don't use AI at all", score: 0 },
+      { label: "I occasionally use ChatGPT or Claude for writing help", score: 20 },
+      { label: "I use AI regularly across multiple parts of my workflow", score: 50 },
+      { label: "AI is embedded in how I create, deliver, and sell", score: 80 }
+    ], key: "usage"
+  },
+  {
+    text: "How much of your business workflow is still done manually?",
+    options: [
+      { label: "Almost everything — I do it all by hand", score: 0 },
+      { label: "Most things — I've automated a little", score: 20 },
+      { label: "About half — I've started building systems", score: 50 },
+      { label: "Very little — most things run without me", score: 80 }
+    ], key: "manual"
+  },
+  {
+    text: "Do you have digital products available for sale right now?",
+    options: [
+      { label: "No — I haven't built anything yet", score: 0 },
+      { label: "I have one product but it's not actively promoted", score: 15 },
+      { label: "I have a small suite of products", score: 40 },
+      { label: "I have multiple products with active sales funnels", score: 70 }
+    ], key: "products"
+  },
+  {
+    text: "How do you feel about using tech tools in your business?",
+    options: [
+      { label: "Intimidated — I avoid anything technical", score: 0 },
+      { label: "Cautious — I'll try things if they seem simple enough", score: 20 },
+      { label: "Comfortable — I can figure most things out", score: 50 },
+      { label: "Confident — I actively seek out new tools", score: 70 }
+    ], key: "tech"
+  },
+  {
+    text: "What is your estimated monthly revenue right now?",
+    options: [
+      { label: "Under $500", score: 0, rev: 250, mult: 3.5 },
+      { label: "$500 to $2,000", score: 10, rev: 1250, mult: 2.8 },
+      { label: "$2,000 to $5,000", score: 20, rev: 3500, mult: 2.2 },
+      { label: "Over $5,000", score: 30, rev: 7500, mult: 1.6 }
+    ], key: "revenue"
+  },
+  {
+    text: "Have you ever built or used a custom AI-powered tool in your business?",
+    options: [
+      { label: "No — I didn't know that was possible without coding", score: 0 },
+      { label: "I've heard of it but haven't tried", score: 10 },
+      { label: "I've experimented with it a little", score: 40 },
+      { label: "Yes — I actively use or sell AI tools", score: 80 }
+    ], key: "tools"
+  },
+  {
+    text: "What's your biggest block when it comes to using AI more in your business?",
+    options: [
+      { label: "I don't know where to start", score: 5 },
+      { label: "I'm not technical enough", score: 5 },
+      { label: "I don't have time to learn new things", score: 10 },
+      { label: "I'm already using AI well — I want to go deeper", score: 30 }
+    ], key: "block"
+  }
+];
+
+let current = 0;
+let answers = {};
+let finalScore = 0;
+let finalTier = '';
+
+function render() {
+  const q = questions[current];
+  const pct = (current / questions.length) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('q-meta').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+  document.getElementById('q-text').textContent = q.text;
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (answers[q.key] === i ? ' selected' : '');
+    b.textContent = o.label;
+    b.onclick = () => pick(i);
+    opts.appendChild(b);
+  });
+
+  document.getElementById('btn-back').disabled = current === 0;
+  const next = document.getElementById('btn-next');
+  next.disabled = answers[q.key] === undefined;
+  next.textContent = current === questions.length - 1 ? 'See my score →' : 'Next';
+}
+
+function pick(i) {
+  answers[questions[current].key] = i;
+  document.querySelectorAll('.opt').forEach((b, idx) => b.classList.toggle('selected', idx === i));
+  document.getElementById('btn-next').disabled = false;
+}
+
+function goBack() { if (current > 0) { current--; render(); } }
+
+function goNext() {
+  if (current < questions.length - 1) { current++; render(); }
+  else showGate();
+}
+
+function showGate() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('gate-section').style.display = 'block';
+}
+
+async function submitGate() {
+  const email = document.getElementById('gate-email').value.trim();
+  const name = document.getElementById('gate-name').value.trim();
+  const err = document.getElementById('gate-error');
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  calcScore();
+
+  try {
+    await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, firstName: name, score: finalScore, tier: finalTier })
+    });
+  } catch (e) {}
+
+  showResults(name);
+}
+
+function calcScore() {
+  let total = 0;
+  const max = questions.reduce((s, q) => s + Math.max(...q.options.map(o => o.score)), 0);
+  questions.forEach(q => { if (answers[q.key] !== undefined) total += q.options[answers[q.key]].score; });
+  finalScore = Math.round((total / max) * 100);
+
+  if (finalScore < 26) finalTier = 'Dormant';
+  else if (finalScore < 51) finalTier = 'Awakening';
+  else if (finalScore < 76) finalTier = 'Ascending';
+  else finalTier = 'Activated';
+}
+
+function showResults(name) {
+  document.getElementById('gate-section').style.display = 'none';
+  const res = document.getElementById('results-section');
+  res.style.display = 'block';
+
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('score-num').textContent = finalScore;
+
+  const circumference = 352;
+  const offset = circumference - (finalScore / 100) * circumference;
+  document.getElementById('score-arc').style.strokeDashoffset = Math.round(offset);
+
+  const tiers = {
+    Dormant: { color: '#5F5E5A', bg: '#F1EFE8', title: "AI hasn't touched your business yet.", sub: "You're operating in a market that's moving fast around you. The gap between where you are and where you could be is the biggest opportunity you have right now." },
+    Awakening: { color: '#185FA5', bg: '#E6F1FB', title: "You're aware of AI but not yet activated.", sub: "You know it matters. You've probably tried a few things. But you haven't built the systems that make AI work in your favor yet." },
+    Ascending: { color: '#0F6E56', bg: '#E3F8F9', title: "You're using AI but leaving money behind.", sub: "You're ahead of most. But using AI for writing help is the surface level. The real leverage is in building tools, automating delivery, and creating AI-powered products your competitors don't have." },
+    Activated: { color: '#3C3489', bg: '#EEEDFE', title: "You're ahead of 90% of your niche.", sub: "You've built AI into your workflow in a real way. The next level is custom tool building — deploying AI as a product, not just a productivity hack." }
+  };
+
+  const t = tiers[finalTier];
+  const pill = document.getElementById('tier-pill');
+  pill.textContent = finalTier;
+  pill.style.background = t.bg;
+  pill.style.color = t.color;
+  document.getElementById('res-title').textContent = name ? name + ', ' + t.title.charAt(0).toLowerCase() + t.title.slice(1) : t.title;
+  document.getElementById('res-sub').textContent = t.sub;
+
+  const revAns = answers['revenue'];
+  const revOpt = questions[5].options[revAns !== undefined ? revAns : 0];
+  const currRev = revOpt.rev || 250;
+  const usageScore = questions[1].options[answers['usage'] || 0].score;
+  const baseMult = revOpt.mult || 3.5;
+  const aiAdj = usageScore === 0 ? baseMult : usageScore === 20 ? baseMult * 0.8 : usageScore === 50 ? baseMult * 0.5 : baseMult * 0.2;
+  const potRev = Math.round(currRev * (1 + aiAdj));
+  const gap = potRev - currRev;
+
+  document.getElementById('curr-rev').textContent = '$' + currRev.toLocaleString() + '/mo';
+  document.getElementById('pot-rev').textContent = '$' + potRev.toLocaleString() + '/mo';
+  document.getElementById('gap-rev').textContent = '+$' + gap.toLocaleString() + '/mo';
+
+  const bds = [
+    { pass: finalScore >= 50, pass_text: 'Your AI usage is above average for your category.', fail_text: 'Your AI usage is significantly below where it could be.' },
+    { pass: (answers['products'] || 0) >= 2, pass_text: 'You have products in the market — that\'s the right foundation.', fail_text: 'You don\'t yet have products doing the selling while you sleep.' },
+    { pass: (answers['tools'] || 0) >= 2, pass_text: 'You\'ve experimented with AI tools — NOVA takes that to the next level.', fail_text: 'Custom AI tool building is the biggest untapped lever in your business.' },
+    { pass: (answers['manual'] || 0) >= 2, pass_text: 'You\'ve started automating — now it\'s about going deeper.', fail_text: 'Almost everything in your business is still manual — that\'s the first thing to fix.' }
+  ];
+
+  document.getElementById('breakdown-list').innerHTML = bds.map(b => `
+    <div class="bd-row">
+      <div class="bd-dot" style="background:${b.pass ? '#1D9E75' : '#E24B4A'}"></div>
+      <div class="bd-text">${b.pass ? b.pass_text : b.fail_text}</div>
+    </div>`).join('');
+}
+
+function downloadResults() {
+  window.print();
+}
+
+function shareResults() {
+  const text = 'I just got my AI Ascension Score: ' + finalScore + '/100 — ' + finalTier + '. Find out yours at jadejanosi.com';
+  if (navigator.share) {
+    navigator.share({ title: 'My AI Ascension Score', text, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const toast = document.getElementById('share-toast');
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+    });
+  }
+}
+
+render();
+</script>
+</body>
+</html>
